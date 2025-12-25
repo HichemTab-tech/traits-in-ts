@@ -2,15 +2,19 @@
   "name": "traits-in-ts",
   "version": "0.1.0",
   "type": "module",
-  "description": "",
+  "description": "PHP-inspired trait composition for TypeScript with proper inheritance and runtime instanceof support.",
   "keywords": [
-    "react",
-    "surveyjs",
-    "survey-js",
-    "survey",
-    "creator",
-    "react-package",
-    "react-library"
+    "typescript",
+    "traits",
+    "php-traits",
+    "class-composition",
+    "composition",
+    "mixins",
+    "oop",
+    "inheritance",
+    "instanceof",
+    "runtime-types",
+    "symbol-hasinstance"
   ],
   "main": "dist/main.min.js",
   "module": "dist/main.esm.js",
@@ -41,23 +45,10 @@
   },
   "homepage": "https://github.com/HichemTab-tech/traits-in-ts#readme",
   "devDependencies": {
-    "@tailwindcss/vite": "^4.1.18",
-    "@testing-library/dom": "^10.4.1",
-    "@testing-library/react": "^16.3.1",
     "@types/node": "^25.0.3",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^5.1.2",
-    "classnames": "^2.5.1",
-    "jsdom": "^27.3.0",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
     "vite": "^7.3.0",
     "vite-plugin-banner": "^0.8.1",
-    "vite-plugin-css-injected-by-js": "^3.5.2",
-    "vite-plugin-dts": "^4.5.4",
-    "vitest": "^4.0.16"
+    "vite-plugin-dts": "^4.5.4"
   }
 }

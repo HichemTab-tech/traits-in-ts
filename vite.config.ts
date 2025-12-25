@@ -1,10 +1,7 @@
 import { defineConfig } from 'vite';
 import banner from 'vite-plugin-banner';
-import react from '@vitejs/plugin-react';
 import { resolve } from 'path';
 import dts from 'vite-plugin-dts';
-import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import tailwindcss from '@tailwindcss/vite';
 
 
 const version = require('./package.json').version;
@@ -23,23 +20,10 @@ export default defineConfig({
             name: 'TraitsInTypescript',
             fileName: (format: string) => `main${format === 'es' ? '.esm' : '.min'}.js`,
             formats: ['es', 'umd']
-        },
-        rollupOptions: {
-            external: ['react', 'react-dom', 'react/jsx-runtime'], // Mark React, ReactDOM as external
-            output: {
-                globals: {
-                    react: 'React',
-                    'react-dom': 'ReactDOM',
-                    'react/jsx-runtime': 'jsxRuntime'
-                }
-            }
         }
     },
     plugins: [
-        tailwindcss(),
-        react(),
         banner(bannerContent),
-        cssInjectedByJsPlugin(),
         dts({
             entryRoot: 'src', // Base folder for type generation
             outDir: 'dist', // Ensures types go into `dist/`

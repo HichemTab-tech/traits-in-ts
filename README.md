@@ -1,121 +1,143 @@
 # Traits in typescript
 
-*A short but clear description of your package. Explain what it does, why it’s useful, and in what context it should be used.*
+PHP-inspired trait composition for TypeScript with proper inheritance and runtime `instanceof` support.
 
----
+`traits-in-ts` is a small experimental utility that explores how PHP-style traits can be implemented in TypeScript without decorators, transpilers, or mixin hacks.
 
-## 🚀 Getting Started
+It allows composing classes from multiple traits, preserves constructors, supports inheritance, and provides runtime `instanceof Trait` checks, while keeping strong TypeScript typing.
 
-Start by installing the package via your preferred package manager:
+This project is primarily built for experimentation and learning. It can be used in real projects if you understand the trade-offs and limitations.
+
+## Features
+
+* Multiple traits per class
+* Trait constructors are executed
+* Works with existing class inheritance
+* Traits are inherited by subclasses
+* Runtime `instanceof Trait` support
+* Accurate TypeScript inference using intersection types
+
+## Installation
 
 ```sh
-npm install traits-in-ts
+npm install %PACKAGE-NAME%
 ```
 
 or, if using pnpm:
 
 ```sh
-pnpm add traits-in-ts
+pnpm add %PACKAGE-NAME%
 ```
 
----
+## Basic usage
 
-## ☕ 60-Second TL;DR
+### Define traits
 
-Show a minimal but practical example that someone can copy-paste to immediately see results:
+```ts
+class Trait1 {
+  x = "trait1";
 
-```javascript
-import { exampleFunction } from 'traits-in-ts';
+  hello() {
+    console.log("hello from trait1");
+  }
+}
 
-export default function Demo() {
-  const result = exampleFunction('Hello');
-  return <div>{result}</div>;
+class Trait2 {
+  hello(name: string) {
+    console.log("hello from trait2", name);
+  }
 }
 ```
 
-## Usage
+### Compose them into a class
 
-Provide a more detailed usage example:
+```ts
+class A extends use([Trait1, Trait2]) {}
+```
 
-```javascript
-import { exampleFunction } from 'traits-in-ts';
+### Use the class
 
-function Example() {
-  // Default behavior
-  const output = exampleFunction({ name: 'Alice' });
+```ts
+const a = new A();
 
-  // With a custom identifier
-  const custom = exampleFunction(42, 'myKey');
+a.x;            // "trait1"
+a.hello("TS");
 
-  return (
-    <div>
-      <p>{output}</p>
-      <p>{custom}</p>
-    </div>
-  );
+a instanceof Trait1; // true
+a instanceof Trait2; // true
+```
+
+## Using traits with an existing parent class
+
+If your class already extends a parent, you can keep it by passing the parent as the second argument to `use`.
+
+```ts
+class Parent {
+  prop = "parent";
 }
+
+class A extends use([Trait1, Trait2], Parent) {}
 ```
 
----
+This preserves normal class inheritance while adding traits.
 
-## API Reference
+```ts
+const a = new A();
 
-### Function `exampleFunction(args)`
+a.prop;         // "parent"
+a.x;            // from Trait1
 
-Description of what this function/method does and how to use it.
-
-**Parameters:**
-
-| Parameter   | Type   | Description                        |
-|-------------|--------|------------------------------------|
-| `args`      | any    | Description of the arguments.      |
-
-**Returns:**
-
-- Type: `any`
-Briefly describe the returned value or output.
-
-**Example:**
-
-```javascript
-import { exampleFunction } from 'traits-in-ts';
-
-const result = exampleFunction('Hello, world!');
-console.log(result);
+a instanceof Parent; // true
+a instanceof Trait1; // true
 ```
 
----
+## Trait inheritance
 
-## 🤝 Contributions
+Traits are inherited transitively through class inheritance.
 
-Contributions are welcome! Feel free to:
+```ts
+class Trait3 {
+  prop33 = "Hi";
+}
 
-1. Fork the repository
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+class B extends use([Trait3], A) {}
 
-Please follow existing coding styles and clearly state your changes in the pull request.
+const b = new B();
 
-## ❓ FAQ
+b instanceof Trait1; // true
+b instanceof Trait3; // true
+```
 
-**Question 1**
-Answer.
+Traits applied to a parent class are automatically available on subclasses.
 
-**Question 2**
-Answer.
 
-## Issues
+## How it works (overview)
 
-If you encounter any issue, please open an issue [here](https://github.com/HichemTab-tech/traits-in-ts/issues).
+* Each trait is instantiated and merged into the target instance
+* Trait methods are copied to the composed class prototype
+* Trait identity is stored as runtime metadata
+* `instanceof Trait` is implemented via `Symbol.hasInstance`
+* Trait metadata flows naturally through `super()` calls
+
+Traits are treated as runtime composition metadata rather than inheritance.
+
+## Limitations and notes
+
+* This library is experimental and not production-hardened
+* Trait method conflicts are resolved using a “last trait wins” strategy
+* Trait constructors receive the same arguments as the class constructor
+* `Symbol.hasInstance` is modified on trait classes
+
+
+## Status
+
+Experimental / educational.
+
+The goal of this project is to explore trait semantics in TypeScript and understand the boundaries of the language.
+
 
 ## License
 
 Distributed under the MIT License. See [`LICENSE`](LICENSE) file for more details.
 
 &copy; 2025 [Hichem Taboukouyout](mailto:hichem.taboukouyout@hichemtab-tech.me)
-
----
-
-_If you found this package helpful, consider leaving a star! ⭐️_
