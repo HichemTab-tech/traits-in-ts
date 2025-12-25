@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "%PACKAGE-NAME%": ["../src"]
+      "traits-in-ts": ["../src"]
     },
     "rootDir": "../"
   },
