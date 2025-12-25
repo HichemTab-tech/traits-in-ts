@@ -20,13 +20,13 @@ This project is primarily built for experimentation and learning. It can be used
 ## Installation
 
 ```sh
-npm install %PACKAGE-NAME%
+npm install traits-in-ts
 ```
 
 or, if using pnpm:
 
 ```sh
-pnpm add %PACKAGE-NAME%
+pnpm add traits-in-ts
 ```
 
 ## Basic usage
